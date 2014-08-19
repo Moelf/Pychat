@@ -1,4 +1,4 @@
-$def with (toUser, fromUser, createTime, $articlecount, $articles)
+$def with (toUser, fromUser, createTime, articlecount, articles)
 <xml>
     <ToUserName>
         <![CDATA[$toUser]]>
@@ -16,25 +16,6 @@ $def with (toUser, fromUser, createTime, $articlecount, $articles)
         <![CDATA[$articlecount]]>
     </ArticleCount>
     <Articles>
-        $:articles
+$:articles
     </Articles>
 </xml>
-
-
-
-
-<xml>
-          <ToUserName><![CDATA[%s]]></ToUserName>
-          <FromUserName><![CDATA[%s]]></FromUserName>
-          <CreateTime>%s</CreateTime>
-          <MsgType><![CDATA[news]]></MsgType>
-          <ArticleCount>1</ArticleCount>
-          <Articles>
-          <item>
-          <Title><![CDATA[%s]]></Title>
-          <Description><![CDATA[%s]]></Description>
-          <PicUrl><![CDATA[%s]]></PicUrl>
-          <Url><![CDATA[%s]]></Url>
-          </item>
-          </Articles>
-          </xml>"

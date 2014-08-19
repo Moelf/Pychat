@@ -38,16 +38,22 @@ class MpRobot():
             return self.send_text(u"程序猿君正在尝试将公众平台从PHP的plate-form转移至Python, 我猜你刚刚大概说了：" + self.xml_ins.content)
 
         else:
-            return self.send_text("人家暂时还不支持回复此种消息类型啦＞_＜~")  # 注意卖萌使用好标点, 不然unicode的UTF-8会解析错误
+            return self.send_text("人家暂时还不支持回复此种消息类型啦＞_＜~")  # 注意标点, UTF-8
 
-
-    def send_text(self, content):
-        return self.render.test(self.xml_ins.fromusername,
-                                self.xml_ins.tousername,
-                                int(time.time()),
-                                content
+    def send_text(self, content):  # 发送text, 用render.reply_text 封装
+        return self.render.reply_text(self.xml_ins.fromusername,
+                                      self.xml_ins.tousername,
+                                      int(time.time()),
+                                      content
         )
 
-
-    def send_texti(self, articlenum, ):
-        pass
+    def send_textimg(self, *args):
+        articlenum = len(args) / 4  # 通过不定参数*args的长度处理得出article数量
+        content = ""  # 初始化最终结果为空的string
+        for items in range(0, articlenum):  # 循环过items长度
+            content += str(self.render.article(*args[items * 4:items * 4 + 4]))  #取*args中对应的内容丢入article模板
+        return self.render.reply_imgtext(self.xml_ins.fromusername,  #依次丢入图文模板
+                                         self.xml_ins.tousername,
+                                         int(time.time()),
+                                         articlenum,
+                                         content)
