@@ -1,0 +1,40 @@
+$def with (toUser, fromUser, createTime, $articlecount, $articles)
+<xml>
+    <ToUserName>
+        <![CDATA[$toUser]]>
+    </ToUserName>
+    <FromUserName>
+        <![CDATA[$fromUser]]>
+    </FromUserName>
+    <CreateTime>
+        $createTime
+    </CreateTime>
+    <MsgType>
+        <![CDATA[news]]>
+    </MsgType>
+    <ArticleCount>
+        <![CDATA[$articlecount]]>
+    </ArticleCount>
+    <Articles>
+        $:articles
+    </Articles>
+</xml>
+
+
+
+
+<xml>
+          <ToUserName><![CDATA[%s]]></ToUserName>
+          <FromUserName><![CDATA[%s]]></FromUserName>
+          <CreateTime>%s</CreateTime>
+          <MsgType><![CDATA[news]]></MsgType>
+          <ArticleCount>1</ArticleCount>
+          <Articles>
+          <item>
+          <Title><![CDATA[%s]]></Title>
+          <Description><![CDATA[%s]]></Description>
+          <PicUrl><![CDATA[%s]]></PicUrl>
+          <Url><![CDATA[%s]]></Url>
+          </item>
+          </Articles>
+          </xml>"

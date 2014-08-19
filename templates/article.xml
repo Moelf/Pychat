@@ -1,0 +1,7 @@
+$def with (title, description, picurl, url)
+<item>
+    <Title>$title</Title>
+    <Description>$description</Description>
+    <PicUrl>$picurl</PicUrl>
+    <Url>$url</Url>
+</item>
