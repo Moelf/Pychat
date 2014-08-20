@@ -1,6 +1,6 @@
 Pychat
 ======
-An WeChat SDK for `Official Account` written in `Python` + `web.py` (run on SAE primely) 
+A WeChat SDK for `Official Account` written in `Python` + `web.py` (run on SAE primely) 
 Author: [Jerry Ling](https://github.com/jerryling315)
 # Getting start
 To use this SDK, you will need an **account** on WeChat's **Media-Platform**, you can register at [here](http://mp.weixin.qq.com).
