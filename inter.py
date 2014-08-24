@@ -9,8 +9,8 @@ from lxml import etree
 import re  # 正则表达式
 
 
-class XmlMsg():  # 创建对象XmlMsg用于管理Decode后的XML
-    def __init__(self, Tousername, Fromusername, Msgtype, Createtime):  # 使用不定参数, 注意MsgId不存在于事件消息中
+class XmlMsg():  # The object class for manage the "Msg"
+    def __init__(self, Tousername, Fromusername, Msgtype, Createtime):
         self.tousername = Tousername
         self.fromusername = Fromusername
         self.msgtype = Msgtype
@@ -18,18 +18,18 @@ class XmlMsg():  # 创建对象XmlMsg用于管理Decode后的XML
 
 
 class MpRobot():
-    def __init__(self):  # 初始化MpRobot对象的变量
-        self.app_root = os.path.dirname(__file__)  # 根据Sina设置app的根目录
-        self.templates_root = os.path.join(self.app_root, 'templates')  # 根据web.py设置templates根目录
-        self.render = web.template.render(self.templates_root)  # 设置加载的render变量
-        post_get = web.data()  # 获取POST来的原始数据
-        post_xml = etree.fromstring(post_get)  # 用lxml解析原始数据
-        self.xml_ins = XmlMsg(post_xml.find("ToUserName").text,  # 生产XmlMsg的实例xml_ins
+    def __init__(self):  # init the Response class
+        self.app_root = os.path.dirname(__file__)  # Set the app root path
+        self.templates_root = os.path.join(self.app_root, 'templates')  # Set Templates path for web.py
+        self.render = web.template.render(self.templates_root)  # load render
+        post_get = web.data()  # Get Msg from POST
+        post_xml = etree.fromstring(post_get)  # use lxml to process POST data
+        self.xml_ins = XmlMsg(post_xml.find("ToUserName").text,  # Create instance for Msg
                               post_xml.find("FromUserName").text,
                               post_xml.find("MsgType").text,
                               post_xml.find("CreateTime").text
         )
-        if self.xml_ins.msgtype == "text":  # 根据需求自行添加内容, 参考微信封装
+        if self.xml_ins.msgtype == "text":  # add Type as you need
             self.xml_ins.content = post_xml.find("Content").text
             self.xml_ins.msgid = post_xml.find("MsgId").text
         elif self.xml_ins.msgtype == "event":
@@ -40,18 +40,18 @@ class MpRobot():
 
     def POST(self):
         if self.xml_ins.msgtype == "text":
-            if self.xml_ins.content in u"?？？" or "help" in self.xml_ins.content:  # 使用unicode来使中文“？”工作
+            if self.xml_ins.content in u"?？？" or "help" in self.xml_ins.content:  # use Unicode for Chinese
                 return self.asking()
-            elif re.compile(r"recent", re.I).search(self.xml_ins.content):  # 正则表达式匹配
+            elif re.compile(r"recent", re.I).search(self.xml_ins.content):  # Regular Expression
                 return self.recent()
             else:
                 return self.send_text("收到您的消息啦")
         elif self.xml_ins.event == "subscribe":
             return self.greeting()
         else:
-            return self.send_text("人家暂时还不支持回复此种消息类型啦＞_＜~")  # 注意标点, UTF-8
+            return self.send_text("人家暂时还不支持回复此种消息类型啦＞_＜~")  # UTF-8
 
-    def send_text(self, content):  # 发送text, 用render.reply_text 封装
+    def send_text(self, content):  # send text, use render to load
         return self.render.reply_text(self.xml_ins.fromusername,
                                       self.xml_ins.tousername,
                                       int(time.time()),
@@ -59,11 +59,11 @@ class MpRobot():
         )
 
     def send_textimg(self, *args):
-        articlenum = len(args) / 4  # 通过不定参数*args的长度处理得出article数量
-        content = ""  # 初始化最终结果为空的string
-        for items in range(0, articlenum):  # 循环过items长度
-            content += str(self.render.article(*args[items * 4:items * 4 + 4]))  # 取*args中对应的内容丢入article模板
-        return self.render.reply_imgtext(self.xml_ins.fromusername,  # 依次丢入图文模板
+        articlenum = len(args) / 4  # calculate the number of items through *args
+        content = ""  # init the result
+        for items in range(0, articlenum):  # loop through number of items
+            content += str(self.render.article(*args[items * 4:items * 4 + 4]))  # use the 4 args one time
+        return self.render.reply_imgtext(self.xml_ins.fromusername,  # add into result
                                          self.xml_ins.tousername,
                                          int(time.time()),
                                          articlenum,
