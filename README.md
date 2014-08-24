@@ -81,6 +81,7 @@ def __init__(self):
                               post_xml.find("FromUserName").text,
                               post_xml.find("MsgType").text,
                               post_xml.find("CreateTime").text
+        )
 ```
 You can easily get everything you need in the XML through `.find(STRING)` method in the `post_xml` now.
 ###Send the response 
